@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS typewriter;
+CREATE DATABASE typewriter;
