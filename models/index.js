@@ -11,9 +11,13 @@ var models = {};
 models.sequelize = sequelize;
 models.User = sequelize.import('./user');
 models.Story = sequelize.import('./story');
+models.Section = sequelize.import('./section');
 
 // associations
 models.Story.belongsTo(models.User);
 models.User.hasMany(models.Story);
+
+models.Section.belongsTo(models.Story);
+models.Story.hasMany(models.Section);
 
 module.exports = models;
