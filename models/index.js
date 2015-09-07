@@ -7,7 +7,7 @@ var sequelize = new Sequelize('typewriter', 'typewriter_user', 'pass', {
 });
 
 var models = {};
-
 models.sequelize = sequelize;
+models.User = sequelize.import('./user');
 
 module.exports = models;
