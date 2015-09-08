@@ -4,14 +4,14 @@ var router = express.Router();
 
 router.route('/')
   .get(function(req,res){
-    models.Story.findAll({}).then(function(stories){
+    req.user.getStories().then(function(stories){
       res.json(stories);
     }, function(err){
       console.log(err);
     });
   })
   .post(function(req,res){
-    models.Story.create(req.body).then(function(story){
+    models.Story.create({title: req.body.title, UserId: req.user.id }).then(function(story){
         res.json(story);
       }, function(err){
         console.log(err);
@@ -30,7 +30,14 @@ router.route('/:id')
     });
   })
   .get(function(req,res){
-    res.json(res.locals.story);
+    res.locals.story.getSections().then(function(sections){
+      res.json({
+        story: {
+          title: res.locals.story.title,
+          sections: sections
+        }
+      })
+    });
   })
   .patch(function(req,res){
     // updates db using req.body
