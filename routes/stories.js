@@ -32,14 +32,14 @@ router.route('/:id')
   .get(function(req,res){
     res.json(res.locals.story);
   })
-  // .patch(function(req,res){
-  //   // updates db using req.body
-  //   res.locals.story.update(req.body).then(function(story){
-  //     res.json(story);
-  //   }, function(err){
-  //     res.sendStatus(500);
-  //   });
-  // })
+  .patch(function(req,res){
+    // updates db using req.body
+    res.locals.story.update(req.body).then(function(story){
+      res.json(story);
+    }, function(err){
+      res.sendStatus(500);
+    });
+  })
   // .delete(function(req,res){
   //   res.send("story#delete");
   // })
