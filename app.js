@@ -5,9 +5,12 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors');
-// var session = require('express-session');
-// var uuid = require('uuid');
-// require('dotenv').load();
+var session = require('express-session');
+var uuid = require('uuid');
+var MongoStore = require('connect-mongo')(session);
+if (process.env.STAGE != "PRODUCTION") {
+  process.env.SESSION_SECRET || require('dotenv').load();
+};
 var passport = require('./lib/passport');
 
 var routes = require('./routes/index');
@@ -35,6 +38,25 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// store session data in MongoDB and send to client as cookie
+app.use(session({
+  secret : process.env.SESSION_SECRET,
+  resave : false,
+  saveUninitialized : true,
+  store : new MongoStore({
+    url : "mongodb://localhost/sessions" //change in production
+  }),
+  cookie : {
+    maxAge : 600000 // 10 minutes - to keep user logged in for 24 hrs, do I change this?
+    // req.session.cookie.expires = false; // cookie is currently set to not expire
+  },
+  genid : function(req) { // generates a new session id
+    return uuid.v4({
+      rng : uuid.nodeRNG
+    });
+  }
+}));
 
 
 // invokes method .initialize, mounts return value on app
