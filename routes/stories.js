@@ -23,12 +23,12 @@ router.route('/:id')
     //add story id as property of response: makes res.locals.story available to each of following handlers
     models.Story.findById(req.params.id).then(function(story){
       res.locals.story = story;
-      console.log('req.params.id is:' +req.params.id + 'and story is: ' + res.locals.story);
       next();
     }, function(err){
       next(err); //goes to fail handler in app, unless we set fail handler below with all
     });
   })
+  // in addition to showing one story, also indexes story's sections
   .get(function(req,res){
     res.locals.story.getSections().then(function(sections){
       res.json({
@@ -45,6 +45,18 @@ router.route('/:id')
       res.json(story);
     }, function(err){
       res.sendStatus(500);
+    });
+  })
+  // creates a section in the story
+  .post(function(req,res){
+    models.Section.create({title: req.body.title,
+                           StoryId: res.locals.story.id,
+                           overview: req.body.overview,
+                           prose: req.body.prose
+    }).then(function(section){
+        res.json(section);
+      }, function(err){
+        console.log(err);
     });
   })
   .delete(function(req,res){
