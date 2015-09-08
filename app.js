@@ -14,7 +14,7 @@ if (process.env.STAGE != "PRODUCTION") {
 var passport = require('./lib/passport');
 
 var routes = require('./routes/index');
-// var stories = require('./routes/stories');
+var stories = require('./routes/stories');
 // var sections = require('./routes/sections');
 // var images = require('./routes/images');
 
@@ -68,7 +68,7 @@ app.use(passport.session());
 
 
 app.use('/', routes);
-// app.use('/stories', stories);
+app.use('/stories', stories);
 // app.use('/sections', sections);
 // app.use('/images', images);
 
