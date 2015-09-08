@@ -40,9 +40,13 @@ router.route('/:id')
       res.sendStatus(500);
     });
   })
-  // .delete(function(req,res){
-  //   res.send("story#delete");
-  // })
+  .delete(function(req,res){
+    res.locals.story.destroy().then(function(){
+      res.send('story deleted');
+    }, function(err){
+      next(err);
+    });
+  })
   // fail handler -- next(err) leads here
   .all(function(err, req, res, next){
     if (err){
