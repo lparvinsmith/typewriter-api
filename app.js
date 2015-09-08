@@ -4,6 +4,11 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+// var cors = require('cors');
+// var session = require('express-session');
+// var uuid = require('uuid');
+// require('dotenv').load();
+var passport = require('./lib/passport');
 
 var routes = require('./routes/index');
 // var stories = require('./routes/stories');
@@ -23,6 +28,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+// invokes method .initialize, mounts return value on app
+// .initalize returns req.passport.user attached to session, or if not found creates empty obj
+app.use(passport.initialize());
+// invokes method .session, mounts return value on app
+// If it finds a serialized user object in the session, it will consider the request authenticated.
+app.use(passport.session());
+
 
 app.use('/', routes);
 // app.use('/stories', stories);
