@@ -2,6 +2,11 @@ var express = require('express');
 var models = require('../models/index');
 var router = express.Router();
 
+var multer = require('multer');
+var storage = multer.memoryStorage();
+var upload = multer({ storage: storage });
+var awsUpload = require('../lib/aws-upload.js'); // DOUBLE CHECK THIS WHEN CREATE
+
 // for section index and section create, see route/stories
 // only need routes for id - edit, show one, delete
 // images - create and index images here
@@ -29,14 +34,16 @@ router.route('/:id')
     });
   })
   // creates image in section
-  .post(function(req,res){
-    models.Image.create({location: req.body.location,
-                         SectionId: res.locals.section.id
-    }).then(function(image){
-        res.json(image);
-      }, function(err){
-        console.log(err);
-    });
+  .post( upload.single('file'), function(req, res, next) {
+    // res.json({body: req.body, file: req.file.buffer});
+    // call aws-upload file in lib
+    // add SectionId to
+    awsUpload(req.file.buffer, res.locals.section.id, function(err, image){
+      if (err) {
+        return next(err);
+      }
+      res.json(image);
+    })
   })
   .patch(function(req,res){
     // updates db using req.body
