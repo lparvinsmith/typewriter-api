@@ -33,11 +33,8 @@ router.route('/:id')
       })
     });
   })
-  // creates image in section
+  // creates image in section using lib/aws-upload module
   .post( upload.single('file'), function(req, res, next) {
-    // res.json({body: req.body, file: req.file.buffer});
-    // call aws-upload file in lib
-    // add SectionId to
     awsUpload(req.file.buffer, res.locals.section.id, function(err, image){
       if (err) {
         return next(err);
