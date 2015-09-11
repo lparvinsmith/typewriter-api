@@ -3,11 +3,11 @@ var models = require('../models/index');
 var router = express.Router();
 
 router.route('/')
-  .get(function(req,res){
+  .get(function(req,res,next){
     req.user.getStories().then(function(stories){
       res.json(stories);
     }, function(err){
-      console.log(err);
+      next(err);
     });
   })
   .post(function(req,res){
