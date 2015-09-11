@@ -34,8 +34,10 @@ router.route('/:id')
     });
   })
   // creates image in section using lib/aws-upload module
-  .post( upload.single('file'), function(req, res, next) {
-    awsUpload(req.file.buffer, res.locals.section.id, function(err, image){
+  .post(function(req, res, next) {
+    var buffer = new Buffer(req.body.file.split(",")[1], 'base64');
+    console.log(buffer);
+    awsUpload(buffer, res.locals.section.id, function(err, image){
       if (err) {
         return next(err);
       }
