@@ -45,7 +45,7 @@ app.use(session({
   resave : false,
   saveUninitialized : true,
   store : new MongoStore({
-    url : "mongodb://localhost/sessions" //change in production
+    url : (process.env.MONGOLAB_URI + "/sessions")
   }),
   cookie : {
     maxAge : 57600000 // 16 hours, so user can use all day with 8 hours of sleep
