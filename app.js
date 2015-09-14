@@ -48,7 +48,7 @@ app.use(session({
     url : "mongodb://localhost/sessions" //change in production
   }),
   cookie : {
-    maxAge : 600000 // 10 minutes - to keep user logged in for 24 hrs, do I change this?
+    maxAge : 57600000 // 16 hours, so user can use all day with 8 hours of sleep
     // req.session.cookie.expires = false; // cookie is currently set to not expire
   },
   genid : function(req) { // generates a new session id
