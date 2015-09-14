@@ -1,10 +1,27 @@
 var Sequelize = require('sequelize');
 
-var sequelize = new Sequelize('typewriter', 'typewriter_user', 'pass', {
-  host: "localhost",
-  port: 5432,
-  dialect: 'postgres'
-});
+if (process.env.DATABASE_URL) {
+  var match = process.env.DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
+  // the application is executed on Heroku ... use the postgres database
+  var sequelize = new Sequelize(match[5], match[1], match[2], {
+    dialect:  'postgres',
+    protocol: 'postgres',
+    port:     match[4],
+    host:     match[3]
+  });
+
+} else {
+  var sequelize = new Sequelize(process.env.SQL_DB,
+    process.env.SQL_USER,
+    process.env.SQL_PASS,
+
+    {
+      host: process.env.SQL_HOST,
+      port: process.env.SQL_PORT,
+      dialect: 'postgres'
+    }
+  );
+};
 
 // create models object with methods sequelize and constructor functions
 var models = {};
