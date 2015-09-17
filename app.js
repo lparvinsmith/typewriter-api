@@ -48,6 +48,7 @@ app.use(session({
     url : (process.env.MONGOLAB_URI + "/sessions")
   }),
   cookie : {
+    httpOnly: false,
     maxAge : 57600000 // 16 hours, so user can use all day with 8 hours of sleep
     // req.session.cookie.expires = false; // cookie is currently set to not expire
   },
