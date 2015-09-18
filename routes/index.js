@@ -11,6 +11,17 @@ var models = require('../models/index'),
 
 ////// AUTHENTICATION ///////
 
+// GET USER INFO
+router.route('/profile')
+  .get(function(req, res, next){
+    if (req.user) {
+      res.send(req.user);
+    } else {
+      var err = new Error("Not logged in.");
+      return next(err);
+    }
+  });
+
 // REGISTER
 router.route('/signup')
   .get(function(req, res, next) {
