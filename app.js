@@ -27,7 +27,7 @@ app.set('view engine', 'hbs');
 // CORS policy
 app.use(cors({
  credentials: true,
- origin: 'http://lparvinsmith.github.io',
+ origin: 'http://lara-parvinsmith.com', //change for dev
  allowedHeaders: ['Cookie', 'Content-Type']
 }));
 
